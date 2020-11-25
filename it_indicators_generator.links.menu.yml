@@ -1,0 +1,5 @@
+it_indicators_gen.settings:
+  title: Process generation
+  description: Generate the IT indicators
+  route_name: it_indicators_gen.settings
+  parent: system.admin_config

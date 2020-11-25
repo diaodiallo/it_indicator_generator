@@ -1,0 +1,206 @@
+<?php
+///**
+// * Created by PhpStorm.
+// * User: ddiallo
+// * Date: 9/6/19
+// * Time: 2:39 PM
+// */
+//
+//use Drupal\node\Entity\Node;
+//use Drupal\it_indicators_generator\Util\ItIndicatorsGenUtility;
+//
+///**
+// * Implements hook_node_presave
+// */
+//
+//function it_indicators_generator_node_presave(Drupal\node\NodeInterface $node) {
+//
+//  //For content update
+//
+//  if ($node->bundle() == "data") {
+//
+//    if ($node->id()) {
+//      $terms = new IndicatorsGenUtility();
+//      $title = $terms->getTermName($node->get('field_state_province')
+//          ->getValue()[0]["target_id"]) . "-" . $terms->getTermName($node->get('field_year')
+//          ->getValue()[0]["target_id"]) . "-" . $terms->getTermName($node->get('field_period')
+//          ->getValue()[0]["target_id"]) . "-Indicators";
+//
+//      $entity = \Drupal::entityTypeManager()
+//        ->getStorage('basic_data');
+//
+//      $my_taji_ind = $entity->loadByProperties(['name' => $title]);
+//
+//      if (!empty($my_taji_ind)) {
+//        $entity->delete($my_taji_ind);
+//      }
+//      $entity_definition = \Drupal::entityTypeManager()
+//        ->getDefinition('basic_data');
+//      $values = [
+//        $entity_definition->getKey('bundle') => 'tajikistan_indicators',
+//        'name' => $title,
+//        'data' => 'Some data',
+//        'field_taji_data_year' => $terms->getTermName($node->get('field_year')
+//          ->getValue()[0]["target_id"]),
+//        'field_taji_data_period' => $terms->getTermName($node->get('field_period')
+//          ->getValue()[0]["target_id"]),
+//        'field_taji_data_province_state' => $terms->getTermName($node->get('field_state_province')
+//          ->getValue()[0]["target_id"]),
+//        'field_taji_data_district' => $terms->getTermName($node->get('field_district')
+//          ->getValue()[0]["target_id"]),
+//        'field_estimated_number_of_incide' => $node->get('field_e_inc_num')
+//          ->getValue()[0]["value"],
+//        'field_proportion_of_estimated_ca' => (is_null($node->get('field_e_inc_num')
+//            ->getValue()[0]["value"]) || $node->get('field_e_inc_num')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_c_newinc')
+//              ->getValue()[0]["value"] / $node->get('field_e_inc_num')
+//              ->getValue()[0]["value"])*100,
+//        'field_new_pulmonary_bacteriologi' => (is_null($node->get('field_c_newinc')
+//            ->getValue()[0]["value"]) || $node->get('field_c_newinc')
+//            ->getValue()[0]["value"] == 0) ? 0 : (($node->get('field_new_labconf')
+//                ->getValue()[0]["value"] + $node->get('field_new_ep')
+//                ->getValue()[0]["value"]) / $node->get('field_c_newinc')
+//              ->getValue()[0]["value"])*100,
+//        'field_proportion_of_rr_mdr_tb_ca' => (is_null($node->get('field_mdr_coh')
+//            ->getValue()[0]["value"]) || $node->get('field_mdr_coh')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_mdr_succ')
+//              ->getValue()[0]["value"] / $node->get('field_mdr_coh')
+//              ->getValue()[0]["value"])*100,
+//        'field_proportion_of_new_pulmonar' => (is_null($node->get('field_newrel_coh')
+//            ->getValue()[0]["value"]) || $node->get('field_newrel_coh')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_newrel_succ')
+//              ->getValue()[0]["value"] / $node->get('field_newrel_coh')
+//              ->getValue()[0]["value"])*100,
+//        'field_estimated_incidence_of_rif' => $node->get('field_e_inc_rr_num')
+//          ->getValue()[0]["value"],
+//        'field_number_of_new_and_relapse‎' => (is_null($node->get('field_conf_rrmdr')
+//            ->getValue()[0]["value"]) || $node->get('field_conf_rrmdr')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_all_conf_xdr')
+//              ->getValue()[0]["value"] / $node->get('field_conf_rrmdr')
+//              ->getValue()[0]["value"])*100,
+//        'field_proportion_of_xdr_tb_cases‎' => (is_null($node->get('field_xdr_coh')
+//            ->getValue()[0]["value"]) || $node->get('field_xdr_coh')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_xdr_succ')
+//              ->getValue()[0]["value"] / $node->get('field_xdr_coh')
+//              ->getValue()[0]["value"])*100,
+//        'field__of_tb_cases_confirmed_as' => (is_null($node->get('field_c_newinc')
+//            ->getValue()[0]["value"]) || $node->get('field_c_newinc')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_conf_rrmdr')
+//              ->getValue()[0]["value"] / $node->get('field_c_newinc')
+//              ->getValue()[0]["value"])*100,
+//        'field__of_tb_cases_with_document' => (is_null($node->get('field_c_newinc')
+//            ->getValue()[0]["value"]) || $node->get('field_c_newinc')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_newrel_hivtest')
+//              ->getValue()[0]["value"] / $node->get('field_c_newinc')
+//              ->getValue()[0]["value"])*100,
+//        'field__of_eligible_plhiv_initiat' => (is_null($node->get('field_hiv_reg_new')
+//            ->getValue()[0]["value"]) || $node->get('field_hiv_reg_new')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_hiv_ipt')
+//              ->getValue()[0]["value"] / $node->get('field_hiv_reg_new')
+//              ->getValue()[0]["value"])*100,
+//        'field_relationship' => $node->id(),
+//      ];
+//      $entity->create($values)->save();
+//
+//    }
+//  }
+//}
+//
+///**
+// * Implement hook_node_insert
+// *
+// * @param \Drupal\node\NodeInterface $node
+// */
+//
+//function it_indicators_generator_node_insert(Drupal\node\NodeInterface $node) {
+//  //Here for new content creation
+//  if ($node->bundle() == "data") {
+//
+//    //Test just the value since it's not null in this level
+//    if ($node->id()) {
+//
+//      $terms = new IndicatorsGenUtility();
+//
+//      $title = $terms->getTermName($node->get('field_state_province')
+//          ->getValue()[0]["target_id"]) . "-" . $terms->getTermName($node->get('field_year')
+//          ->getValue()[0]["target_id"]) . "-" . $terms->getTermName($node->get('field_period')
+//          ->getValue()[0]["target_id"]) . "-Indicators";
+//
+//      $entity = \Drupal::entityTypeManager()
+//        ->getStorage('basic_data');
+//
+//      $my_taji_ind = $entity->loadByProperties(['name' => $title]);
+//
+//      if (!empty($my_taji_ind)) {
+//        $entity->delete($my_taji_ind);
+//      }
+//      $entity_definition = \Drupal::entityTypeManager()
+//        ->getDefinition('basic_data');
+//      $values = [
+//        $entity_definition->getKey('bundle') => 'tajikistan_indicators',
+//        'name' => $title,
+//        'data' => 'Somme data',
+//        'field_taji_data_year' => $terms->getTermName($node->get('field_year')
+//          ->getValue()[0]["target_id"]),
+//        'field_taji_data_period' => $terms->getTermName($node->get('field_period')
+//          ->getValue()[0]["target_id"]),
+//        'field_taji_data_province_state' => $terms->getTermName($node->get('field_state_province')
+//          ->getValue()[0]["target_id"]),
+//        'field_taji_data_district' => $terms->getTermName($node->get('field_district')
+//          ->getValue()[0]["target_id"]),
+//        'field_estimated_number_of_incide' => $node->get('field_e_inc_num')
+//          ->getValue()[0]["value"],
+//        'field_proportion_of_estimated_ca' => (is_null($node->get('field_e_inc_num')
+//            ->getValue()[0]["value"]) || $node->get('field_e_inc_num')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_c_newinc')
+//            ->getValue()[0]["value"] / $node->get('field_e_inc_num')
+//            ->getValue()[0]["value"])*100,
+//        'field_new_pulmonary_bacteriologi' => (is_null($node->get('field_c_newinc')
+//            ->getValue()[0]["value"]) || $node->get('field_c_newinc')
+//            ->getValue()[0]["value"] == 0) ? 0 : (($node->get('field_new_labconf')
+//            ->getValue()[0]["value"] + $node->get('field_new_ep')
+//            ->getValue()[0]["value"]) / $node->get('field_c_newinc')
+//            ->getValue()[0]["value"])*100,
+//        'field_proportion_of_rr_mdr_tb_ca' => (is_null($node->get('field_mdr_coh')
+//            ->getValue()[0]["value"]) || $node->get('field_mdr_coh')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_mdr_succ')
+//            ->getValue()[0]["value"] / $node->get('field_mdr_coh')
+//            ->getValue()[0]["value"])*100,
+//        'field_proportion_of_new_pulmonar' => (is_null($node->get('field_newrel_coh')
+//            ->getValue()[0]["value"]) || $node->get('field_newrel_coh')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_newrel_succ')
+//            ->getValue()[0]["value"] / $node->get('field_newrel_coh')
+//            ->getValue()[0]["value"])*100,
+//        'field_estimated_incidence_of_rif' => $node->get('field_e_inc_rr_num')
+//          ->getValue()[0]["value"],
+//        'field_number_of_new_and_relapse‎' => (is_null($node->get('field_conf_rrmdr')
+//            ->getValue()[0]["value"]) || $node->get('field_conf_rrmdr')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_all_conf_xdr')
+//            ->getValue()[0]["value"] / $node->get('field_conf_rrmdr')
+//            ->getValue()[0]["value"])*100,
+//        'field_proportion_of_xdr_tb_cases‎' => (is_null($node->get('field_xdr_coh')
+//            ->getValue()[0]["value"]) || $node->get('field_xdr_coh')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_xdr_succ')
+//            ->getValue()[0]["value"] / $node->get('field_xdr_coh')
+//            ->getValue()[0]["value"])*100,
+//        'field__of_tb_cases_confirmed_as' => (is_null($node->get('field_c_newinc')
+//            ->getValue()[0]["value"]) || $node->get('field_c_newinc')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_conf_rrmdr')
+//              ->getValue()[0]["value"] / $node->get('field_c_newinc')
+//              ->getValue()[0]["value"])*100,
+//        'field__of_tb_cases_with_document' => (is_null($node->get('field_c_newinc')
+//            ->getValue()[0]["value"]) || $node->get('field_c_newinc')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_newrel_hivtest')
+//              ->getValue()[0]["value"] / $node->get('field_c_newinc')
+//              ->getValue()[0]["value"])*100,
+//        'field__of_eligible_plhiv_initiat' => (is_null($node->get('field_hiv_reg_new')
+//            ->getValue()[0]["value"]) || $node->get('field_hiv_reg_new')
+//            ->getValue()[0]["value"] == 0) ? 0 : ($node->get('field_hiv_ipt')
+//              ->getValue()[0]["value"] / $node->get('field_hiv_reg_new')
+//              ->getValue()[0]["value"])*100,
+//        'field_relationship' => $node->id(),
+//      ];
+//      $entity->create($values)->save();
+//    }
+//  }
+//}

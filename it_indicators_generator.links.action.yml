@@ -1,0 +1,6 @@
+it_indicators_gen.process:
+  title: Generate indicators
+  description: Generate indicators from DHIS2 pulled data
+  route_name: it_indicators_gen.process
+  appears_on:
+    - it_indicators_gen.settings

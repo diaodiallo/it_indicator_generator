@@ -1,0 +1,16 @@
+it_indicators_gen.process:
+  path: 'admin/config/it_indicators_generator/process'
+  defaults:
+    _form: '\Drupal\it_indicators_generator\Form\ItIndicatorsGenProcessForm'
+    _title: 'Process indicators generation'
+  requirements:
+    _permission: 'administer site configuration'
+
+it_indicators_gen.settings:
+  path: 'admin/config/indicators-setting'
+  defaults:
+    _form: 'Drupal\it_indicators_generator\Form\ItIndicatorsGenSettingForm'
+    _title: 'Indicators generator settings'
+  requirements:
+    _permission: 'administer site configuration'
+

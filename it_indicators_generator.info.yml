@@ -1,0 +1,7 @@
+name: "IT Indicators generator"
+type: module
+description: "Generate Indicators from DHIS2 pulled data"
+dependencies:
+  - views
+package: "Views"
+core: 8.x
